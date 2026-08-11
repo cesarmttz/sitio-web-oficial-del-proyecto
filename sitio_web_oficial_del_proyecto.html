@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Red de Movilidad Inteligente CDMX | CETRAM Indios Verdes</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cdmx: {
+                            pink: '#eb0029',
+                            purple: '#7b1fa2',
+                            dark: '#1a1a1a',
+                            green: '#00875a',
+                            yellow: '#ffab00',
+                            metro: '#f36e21',
+                            metrobus: '#d32f2f',
+                            cablebus: '#0288d1'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        .tab-active {
+            border-bottom: 3px solid #eb0029;
+            color: #eb0029;
+            font-weight: 700;
+        }
+        .whatsapp-bg {
+            background-color: #e5ddd5;
+            background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png');
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-pink-500 selection:text-white">
+
+    <!-- HEADER / NAVEGACIÓN PRINCIPAL -->
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-md border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- LOGO E IDENTIDAD -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchSection('inicio')">
+                    <div class="w-11 h-11 bg-gradient-to-tr from-cdmx-pink to-purple-700 rounded-xl flex items-center justify-center text-white shadow-lg shadow-pink-500/30">
+                        <i class="fa-solid fa-bus-simple text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs font-extrabold uppercase tracking-widest text-cdmx-pink block">Prepa en Línea-SEP</span>
+                        <h1 class="text-lg font-bold text-slate-900 leading-none">Red Movilidad Inteligente</h1>
+                    </div>
+                </div>
+
+                <!-- MENÚ DESK (Tabs de navegación requeridos por rúbrica) -->
+                <nav class="hidden md:flex space-x-1 text-sm font-semibold text-slate-600">
+                    <button id="tab-inicio" onclick="switchSection('inicio')" class="tab-btn px-4 py-2 rounded-lg hover:text-cdmx-pink hover:bg-slate-100 transition-all tab-active">Inicio</button>
+                    <button id="tab-diagnostico" onclick="switchSection('diagnostico')" class="tab-btn px-4 py-2 rounded-lg hover:text-cdmx-pink hover:bg-slate-100 transition-all">Diagnóstico</button>
+                    <button id="tab-objetivos" onclick="switchSection('objetivos')" class="tab-btn px-4 py-2 rounded-lg hover:text-cdmx-pink hover:bg-slate-100 transition-all">Objetivos & Metas</button>
+                    <button id="tab-justificacion" onclick="switchSection('justificacion')" class="tab-btn px-4 py-2 rounded-lg hover:text-cdmx-pink hover:bg-slate-100 transition-all">Justificación</button>
+                    <button id="tab-planificacion" onclick="switchSection('planificacion')" class="tab-btn px-4 py-2 rounded-lg hover:text-cdmx-pink hover:bg-slate-100 transition-all">Planificación</button>
+                    <button id="tab-demo" onclick="switchSection('demo')" class="tab-btn px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-all shadow-md shadow-emerald-600/20 flex items-center space-x-2">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                        <span>Prototipo Bot</span>
+                    </button>
+                </nav>
+
+                <!-- BOTÓN MOBILE -->
+                <button onclick="toggleMobileMenu()" class="md:hidden text-slate-700 text-2xl focus:outline-none p-2">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- MENÚ MOBILE DROPDOWN -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-4 space-y-2 text-sm font-medium">
+            <button onclick="switchSection('inicio'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md hover:bg-slate-100">Inicio</button>
+            <button onclick="switchSection('diagnostico'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md hover:bg-slate-100">Diagnóstico</button>
+            <button onclick="switchSection('objetivos'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md hover:bg-slate-100">Objetivos & Metas</button>
+            <button onclick="switchSection('justificacion'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md hover:bg-slate-100">Justificación</button>
+            <button onclick="switchSection('planificacion'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md hover:bg-slate-100">Planificación</button>
+            <button onclick="switchSection('demo'); toggleMobileMenu();" class="block w-full text-center px-3 py-2 bg-emerald-600 text-white rounded-md font-bold">Prototipo Chatbot WhatsApp</button>
+        </div>
+    </header>
+
+    <!-- ESTUDIANTE METADATA BANNER -->
+    <div class="bg-gradient-to-r from-slate-900 via-purple-950 to-slate-900 text-white text-xs py-2.5 px-4 border-b border-purple-800/40">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
+            <div class="flex items-center space-x-3">
+                <span class="bg-pink-600 text-white px-2 py-0.5 rounded font-bold uppercase tracking-wider text-[10px]">Módulo 23</span>
+                <span><strong>Estudiante:</strong> César Martínez Villanueva</span>
+                <span class="hidden sm:inline text-slate-400">|</span>
+                <span class="hidden sm:inline"><strong>Grupo:</strong> M23C2G62-019</span>
+            </div>
+            <div class="flex items-center space-x-3 text-slate-300">
+                <span><strong>Asesora Virtual:</strong> María Jesica Zavala Pineda</span>
+                <span class="hidden md:inline">| Agosto 2026</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- ==================== SECCIÓN 1: INICIO / PROYECTO ==================== -->
+        <section id="sec-inicio" class="content-sec space-y-12">
+            <!-- HERO HERO SECTION -->
+            <div class="relative bg-gradient-to-br from-slate-900 via-purple-900 to-slate-800 rounded-3xl p-8 sm:p-12 text-white overflow-hidden shadow-2xl">
+                <div class="absolute -right-12 -bottom-12 w-96 h-96 bg-cdmx-pink/20 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    <div class="lg:col-span-8 space-y-6">
+                        <div class="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-md px-3.5 py-1.5 rounded-full text-xs font-semibold text-pink-300 border border-white/10">
+                            <i class="fa-solid fa-location-dot text-cdmx-pink"></i>
+                            <span>CETRAM Indios Verdes — CDMX / Edomex</span>
+                        </div>
+                        <h1 class="text-3xl sm:text-5:xl lg:text-5xl font-extrabold tracking-tight leading-tight">
+                            Red de Movilidad Inteligente <span class="bg-gradient-to-r from-pink-400 to-amber-300 bg-clip-text text-transparent">CDMX</span>
+                        </h1>
+                        <p class="text-slate-300 text-base sm:text-lg leading-relaxed max-w-2xl">
+                            Sistema de información colaborativa en tiempo real sustentado en inteligencia colectiva (<em>crowdsourcing</em>) y asistencia automatizada en WhatsApp Business API para optimizar transbordos intermodales.
+                        </p>
+
+                        <!-- MÉTRICAS CLAVE -->
+                        <div class="grid grid-cols-3 gap-4 pt-4 border-t border-white/10">
+                            <div>
+                                <span class="text-2xl sm:text-3xl font-black text-amber-400">&lt; 3s</span>
+                                <p class="text-xs text-slate-400 font-medium">Tiempo Respuesta</p>
+                            </div>
+                            <div>
+                                <span class="text-2xl sm:text-3xl font-black text-emerald-400">&gt; 85%</span>
+                                <p class="text-xs text-slate-400 font-medium">Precisión Alertas</p>
+                            </div>
+                            <div>
+                                <span class="text-2xl sm:text-3xl font-black text-pink-400">15-20%</span>
+                                <p class="text-xs text-slate-400 font-medium">Ahorro Tiempo</p>
+                            </div>
+                        </div>
+
+                        <div class="pt-2 flex flex-wrap gap-4">
+                            <button onclick="switchSection('demo')" class="px-6 py-3.5 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold rounded-xl transition-all shadow-lg shadow-emerald-500/30 flex items-center space-x-2">
+                                <i class="fa-brands fa-whatsapp text-xl"></i>
+                                <span>Probar Bot Interactivo</span>
+                            </button>
+                            <button onclick="switchSection('diagnostico')" class="px-6 py-3.5 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl backdrop-blur-md transition-all border border-white/15">
+                                Ver Diagnóstico Completo
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- CARD DE ESTADO VIVO -->
+                    <div class="lg:col-span-4 bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/20 text-center space-y-4">
+                        <div class="inline-block p-3 bg-white/20 rounded-full">
+                            <i class="fa-solid fa-qrcode text-4xl text-amber-300"></i>
+                        </div>
+                        <h2 class="text-lg font-bold">Escanea & Reporta en Andenes</h2>
+                        <p class="text-xs text-slate-300">Sin necesidad de descargar aplicaciones adicionales. Compatible con cualquier smartphone con WhatsApp.</p>
+                        <div class="bg-white p-3 rounded-xl inline-block shadow-inner">
+                            <!-- Simulated QR code icon visually -->
+                            <div class="w-32 h-32 bg-slate-900 rounded flex flex-col items-center justify-center text-white p-2 text-center text-[10px] space-y-1">
+                                <i class="fa-solid fa-qrcode text-5xl text-emerald-400"></i>
+                                <span>BOT INDIOS VERDES</span>
+                            </div>
+                        </div>
+                        <p class="text-[11px] text-emerald-300 font-semibold"><i class="fa-solid fa-circle text-[8px] animate-pulse"></i> Piloto 2do Semestre 2026</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- INTERCONEXIÓN MODAL EN CETRAM INDIOS VERDES -->
+            <div class="space-y-6">
+                <div class="text-center max-w-2xl mx-auto">
+                    <h2 class="text-2xl font-bold text-slate-900">Cobertura Intermodal Indios Verdes</h2>
+                    <p class="text-sm text-slate-600">El punto de encuentro metropolitano más saturado de la ZMVM integrado en un solo asistente automatizado.</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all border-l-4 border-l-cdmx-metro">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="w-10 h-10 bg-orange-100 text-cdmx-metro rounded-xl flex items-center justify-center text-xl font-black">L3</span>
+                            <span class="text-xs font-bold text-slate-500 uppercase">STC Metro</span>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-lg">Metro Línea 3</h3>
+                        <p class="text-xs text-slate-600 mt-2">Indios Verdes - Universidad. Monitoreo micro-localizado de andenes de abordaje y torniquetes.</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all border-l-4 border-l-cdmx-metrobus">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="w-10 h-10 bg-red-100 text-cdmx-metrobus rounded-xl flex items-center justify-center text-xl font-black">L1/7</span>
+                            <span class="text-xs font-bold text-slate-500 uppercase">Metrobús</span>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-lg">Metrobús L1 y L7</h3>
+                        <p class="text-xs text-slate-600 mt-2">Conexiones a El Caminero y Campo Marte. Semáforo de afluencia por estación física.</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all border-l-4 border-l-cdmx-cablebus">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="w-10 h-10 bg-sky-100 text-cdmx-cablebus rounded-xl flex items-center justify-center text-xl font-black">L1</span>
+                            <span class="text-xs font-bold text-slate-500 uppercase">Cablebús</span>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-lg">Cablebús Línea 1</h3>
+                        <p class="text-xs text-slate-600 mt-2">Indios Verdes - Cuautepec. Estado operativo de cabinas y filas de abordaje en tiempo real.</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all border-l-4 border-l-purple-600">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="w-10 h-10 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center text-xl font-black">+30</span>
+                            <span class="text-xs font-bold text-slate-500 uppercase">Concesionado</span>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-lg">Rutas EdoMex</h3>
+                        <p class="text-xs text-slate-600 mt-2">Rutas de transporte colectivo hacia Ecatepec, Tlalnepantla, Tecámac y Coacalco.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SECCIÓN 2: DIAGNÓSTICO ==================== -->
+        <section id="sec-diagnostico" class="content-sec hidden space-y-10">
+            <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm">
+                <div class="max-w-3xl space-y-4">
+                    <span class="text-xs font-extrabold uppercase tracking-wider text-cdmx-pink bg-pink-50 px-3 py-1 rounded-full border border-pink-200">Fases 1 y 2 del Diagnóstico</span>
+                    <h2 class="text-3xl font-extrabold text-slate-900">Definición de la Problemática Vial</h2>
+                    <p class="text-slate-600 text-sm sm:text-base leading-relaxed">
+                        El Centro de Transferencia Modal (CETRAM) Indios Verdes es uno de los nodos intermodales más saturados e intensos del país. Diariamente conecta a más de un millón de pasajeros entre el Estado de México y la Ciudad de México. La principal problemática diagnosticada es la <strong>incertidumbre crítica y la falta de información veraz en tiempo real</strong> sobre la saturación interna de andenes y retrasos operativos.
+                    </p>
+                </div>
+
+                <!-- ÁRBOL DE PROBLEMAS (Causas y Consecuencias) -->
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 border-t border-slate-200">
+                    <!-- CAUSAS -->
+                    <div class="bg-amber-50/60 p-6 rounded-2xl border border-amber-200/70 space-y-4">
+                        <div class="flex items-center space-x-3 text-amber-800">
+                            <i class="fa-solid fa-circle-nodes text-xl"></i>
+                            <h3 class="font-bold text-lg">Causas Raíz Identificadas</h3>
+                        </div>
+                        <ul class="space-y-3 text-xs sm:text-sm text-slate-700">
+                            <li class="flex items-start space-x-2">
+                                <i class="fa-solid fa-angle-right text-amber-600 mt-1"></i>
+                                <span>Ausencia de canales institucionales unificados que brinden datos micro-localizados por andén específico.</span>
+                            </li>
+                            <li class="flex items-start space-x-2">
+                                <i class="fa-solid fa-angle-right text-amber-600 mt-1"></i>
+                                <span>Alta volatilidad de afluencia sin sincronización entre Mexibús/Transporte concesionado y red CDMX.</span>
+                            </li>
+                            <li class="flex items-start space-x-2">
+                                <i class="fa-solid fa-angle-right text-amber-600 mt-1"></i>
+                                <span>Fallas mecánicas o saturación extraordinaria no notificadas antes de la llegada del pasajero a andenes.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- EFECTOS -->
+                    <div class="bg-rose-50/60 p-6 rounded-2xl border border-rose-200/70 space-y-4">
+                        <div class="flex items-center space-x-3 text-rose-800">
+                            <i class="fa-solid fa-triangle-exclamation text-xl"></i>
+                            <h3 class="font-bold text-lg">Efectos e Impacto Social</h3>
+                        </div>
+                        <ul class="space-y-3 text-xs sm:text-sm text-slate-700">
+                            <li class="flex items-start space-x-2">
+                                <i class="fa-solid fa-angle-right text-rose-600 mt-1"></i>
+                                <span>Pérdida de hasta <strong>45 a 60 minutos adicionales por trayecto</strong> en tiempos de transbordo e incertidumbre.</span>
+                            </li>
+                            <li class="flex items-start space-x-2">
+                                <i class="fa-solid fa-angle-right text-rose-600 mt-1"></i>
+                                <span>Aglomeraciones de alto riesgo en horas pico (06:00-09:00 hrs y 18:00-21:00 hrs).</span>
+                            </li>
+                            <li class="flex items-start space-x-2">
+                                <i class="fa-solid fa-angle-right text-rose-600 mt-1"></i>
+                                <span>Aumento sostenido en niveles de estrés, frustración comunitaria y afectación en la productividad laboral y académica.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TABLA DE BENCHMARKING (Fase 3) -->
+            <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+                <div>
+                    <span class="text-xs font-extrabold uppercase tracking-wider text-purple-700 bg-purple-50 px-3 py-1 rounded-full border border-purple-200">Benchmarking (Fase 3)</span>
+                    <h2 class="text-2xl font-bold text-slate-900 mt-2">Comparativa de Soluciones Existentes vs. Nuestro Proyecto</h2>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs sm:text-sm border-collapse">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-700 uppercase font-bold border-b border-slate-200">
+                                <th class="p-3.5">Solución Evaluada</th>
+                                <th class="p-3.5">Fortalezas</th>
+                                <th class="p-3.5">Debilidades / Limitaciones</th>
+                                <th class="p-3.5 bg-pink-50 text-cdmx-pink">Diferenciador del Proyecto</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200 text-slate-600">
+                            <tr>
+                                <td class="p-3.5 font-bold text-slate-900">Google Maps / Waze</td>
+                                <td class="p-3.5">Excelente cobertura vial y monitoreo vehicular.</td>
+                                <td class="p-3.5">Nula información sobre dinamismo interno de andenes de peatones.</td>
+                                <td class="p-3.5 bg-pink-50/50 font-semibold text-slate-800">100% centrado en la experiencia peatonal e intermodal de andén.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3.5 font-bold text-slate-900">App CDMX Oficial</td>
+                                <td class="p-3.5">Datos institucionales centralizados.</td>
+                                <td class="p-3.5">Actualización lenta, sin aportaciones colaborativas en tiempo real.</td>
+                                <td class="p-3.5 bg-pink-50/50 font-semibold text-slate-800">Actualización inmediata mediante inteligencia colectiva (crowdsourcing).</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3.5 font-bold text-slate-900">Redes Sociales (X/Twitter)</td>
+                                <td class="p-3.5">Inmediatez de publicaciones de usuarios.</td>
+                                <td class="p-3.5">Información desorganizada, dispersa y alto volumen de spam/ruido.</td>
+                                <td class="p-3.5 bg-pink-50/50 font-semibold text-slate-800">Respuestas estructuradas, limpias y organizadas mediante menús interactivos.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SECCIÓN 3: OBJETIVOS Y METAS ==================== -->
+        <section id="sec-objetivos" class="content-sec hidden space-y-8">
+            <div class="bg-gradient-to-r from-purple-900 to-slate-900 text-white p-8 sm:p-10 rounded-3xl shadow-xl">
+                <span class="text-xs font-bold uppercase tracking-widest text-pink-400">Estructura Metodológica</span>
+                <h2 class="text-3xl font-extrabold mt-1">Objetivo General del Proyecto</h2>
+                <p class="text-slate-200 text-base sm:text-lg mt-4 leading-relaxed font-light">
+                    "Diseñar e implementar una prueba piloto de un sistema de información colaborativa en tiempo real (<strong>'Red de Movilidad Inteligente'</strong>) mediante un asistente automatizado en WhatsApp para el CETRAM Indios Verdes, optimizando la toma de decisiones de los transbordos durante el segundo semestre de 2026, para reducir la incertidumbre operativa y disminuir entre un <strong>15% y un 20% el tiempo promedio perdido</strong> por transbordo."
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- OBJETIVO 1 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-xl font-bold">
+                        01
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-base">Infraestructura Lógica & Bot</h3>
+                    <p class="text-xs text-slate-600">Construir y desplegar la infraestructura del asistente en WhatsApp Business API y su base de datos NoSQL con algoritmo de validación de reportes.</p>
+                    <div class="pt-3 border-t border-slate-100 text-xs space-y-2">
+                        <p class="font-bold text-slate-800">Metas Medibles:</p>
+                        <p class="text-slate-600">• Tiempo de respuesta automatizada &lt; 3 segundos en el 99% de interacciones.</p>
+                        <p class="text-slate-600">• Programar el 100% de menús desplegables para Metro L3, Metrobús L1/L7 y Cablebús L1.</p>
+                    </div>
+                </div>
+
+                <!-- OBJETIVO 2 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                    <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center text-xl font-bold">
+                        02
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-base">Adopción y Validación Comunitaria</h3>
+                    <p class="text-xs text-slate-600">Promover la adopción del sistema con la comunidad de pasajeros mediante campañas de difusión física con códigos QR y medios digitales.</p>
+                    <div class="pt-3 border-t border-slate-100 text-xs space-y-2">
+                        <p class="font-bold text-slate-800">Metas Medibles:</p>
+                        <p class="text-slate-600">• Registrar entre 500 y 1,000 usuarios activos recurrentes en las primeras 4 semanas.</p>
+                        <p class="text-slate-600">• Generar entre 150 y 300 reportes diarios validados en horas pico (06:00-09:00 y 18:00-21:00 hrs).</p>
+                    </div>
+                </div>
+
+                <!-- OBJETIVO 3 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                    <div class="w-12 h-12 bg-pink-100 text-cdmx-pink rounded-xl flex items-center justify-center text-xl font-bold">
+                        03
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-base">Evaluación de Eficiencia e Impacto</h3>
+                    <p class="text-xs text-slate-600">Evaluar el desempeño operativo y medir la reducción efectiva de tiempos perdidos e incremento de satisfacción al término del piloto.</p>
+                    <div class="pt-3 border-t border-slate-100 text-xs space-y-2">
+                        <p class="font-bold text-slate-800">Metas Medibles:</p>
+                        <p class="text-slate-600">• Lograr una precisión &gt;85% en la veracidad del semáforo de afluencia emitido.</p>
+                        <p class="text-slate-600">• Reducir de 10 a 12 minutos por usuario en trayectos críticos al cierre de la Semana 8.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SECCIÓN 4: JUSTIFICACIÓN ==================== -->
+        <section id="sec-justificacion" class="content-sec hidden space-y-8">
+            <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm">
+                <span class="text-xs font-extrabold uppercase tracking-wider text-cdmx-pink bg-pink-50 px-3 py-1 rounded-full border border-pink-200">Sustento Multidimensional</span>
+                <h2 class="text-3xl font-extrabold text-slate-900 mt-2">Justificación del Proyecto</h2>
+                <p class="text-slate-600 text-sm mt-2">Fundamentación de la intervención social en los ámbitos de impacto directo para la comunidad de la ZMVM.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                    <!-- ÁMBITO SOCIAL -->
+                    <div class="p-6 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
+                        <div class="w-10 h-10 bg-pink-600 text-white rounded-lg flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-lg">Ámbito Social</h3>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Reduce la incertidumbre operativa y previene aglomeraciones de alto riesgo en andenes en horas pico. Disminuye los niveles de estrés, irritabilidad y frustración colectiva, dignificando el traslado diario de miles de pasajeros.
+                        </p>
+                    </div>
+
+                    <!-- ÁMBITO TECNOLÓGICO Y CULTURAL -->
+                    <div class="p-6 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
+                        <div class="w-10 h-10 bg-purple-600 text-white rounded-lg flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-mobile-screen-button"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-lg">Ámbito Tecnológico y Cultural</h3>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Transforma la posición pasiva del usuario hacia una cultura de participación ciudadana y solidaridad. El uso de WhatsApp y códigos QR elimina barreras tecnológicas, permitiendo que cualquier persona contribuya a la inteligencia colectiva.
+                        </p>
+                    </div>
+
+                    <!-- ÁMBITO ECONÓMICO Y LABORAL -->
+                    <div class="p-6 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
+                        <div class="w-10 h-10 bg-emerald-600 text-white rounded-lg flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-briefcase"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-lg">Ámbito Económico y Laboral</h3>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Evita la pérdida de horas-hombre productivas, disminuyendo retardos laborales y sanciones académicas. Además, el costo operativo del proyecto es sumamente bajo ($2,250.00 MXN), ofreciendo el máximo impacto social con mínima inversión.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- PRESUPUESTO RESUMIDO (Fase 3) -->
+                <div class="mt-8 pt-8 border-t border-slate-200">
+                    <h3 class="font-bold text-slate-900 text-lg mb-4">Balance de Recursos y Presupuesto Optimizado</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+                        <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-200">
+                            <span class="text-xs font-bold text-emerald-800 uppercase">Impresión QR / Vinil</span>
+                            <p class="text-xl font-black text-emerald-600 mt-1">$400.00 MXN</p>
+                        </div>
+                        <div class="p-4 bg-blue-50 rounded-xl border border-blue-200">
+                            <span class="text-xs font-bold text-blue-800 uppercase">Servidor Cloud / APIs</span>
+                            <p class="text-xl font-black text-blue-600 mt-1">$1,500.00 MXN</p>
+                        </div>
+                        <div class="p-4 bg-purple-50 rounded-xl border border-purple-200">
+                            <span class="text-xs font-bold text-purple-800 uppercase">Pauta Publicitaria Digital</span>
+                            <p class="text-xl font-black text-purple-600 mt-1">$500.00 MXN</p>
+                        </div>
+                        <div class="p-4 bg-amber-50 rounded-xl border border-amber-200">
+                            <span class="text-xs font-bold text-amber-800 uppercase">Traslados de Campo</span>
+                            <p class="text-xl font-black text-amber-600 mt-1">$150.00 MXN</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SECCIÓN 5: PLANIFICACIÓN Y CRONOGRAMA ==================== -->
+        <section id="sec-planificacion" class="content-sec hidden space-y-8">
+            <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+                <div>
+                    <span class="text-xs font-extrabold uppercase tracking-wider text-cdmx-pink bg-pink-50 px-3 py-1 rounded-full border border-pink-200">Fases 5 y 6 — Gestión de Proyectos</span>
+                    <h2 class="text-3xl font-extrabold text-slate-900 mt-2">Planificación, Cronograma & Ruta Crítica</h2>
+                    <p class="text-slate-600 text-sm">Cronograma general de ejecución de la prueba piloto proyectado en 30 días hábiles (6 semanas laborables).</p>
+                </div>
+
+                <!-- RUTA CRÍTICA -->
+                <div class="p-4 bg-slate-900 text-white rounded-2xl text-xs sm:text-sm font-mono space-y-2">
+                    <p class="text-amber-400 font-bold uppercase font-sans"><i class="fa-solid fa-route"></i> Cadena de la Ruta Crítica:</p>
+                    <p class="text-slate-300">Tarea 1.1 (Evaluar API) → Tarea 1.2 (Base de Datos) → Tarea 2.2 (Algoritmo Validatorio) → Tarea 3.1 (Webhook Python) → Tarea 3.2 (Semáforo Vivo) → Tarea 4.1 (Pruebas Estrés) → Tarea 5.1 (Colocación QR) → Tarea 5.2 (Monitoreo) → Tarea 6.2 (Reporte Final)</p>
+                </div>
+
+                <!-- DIAGRAMA DE GANTT INTEGRAL RESUMIDO -->
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-700 font-bold uppercase border-b border-slate-200">
+                                <th class="p-3">Fase / Tarea</th>
+                                <th class="p-3">Duración</th>
+                                <th class="p-3">Inicio - Fin</th>
+                                <th class="p-3">Sem 1</th>
+                                <th class="p-3">Sem 2</th>
+                                <th class="p-3">Sem 3</th>
+                                <th class="p-3">Sem 4</th>
+                                <th class="p-3">Sem 5</th>
+                                <th class="p-3">Sem 6</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200 text-slate-600">
+                            <!-- FASE 1 -->
+                            <tr class="bg-slate-50 font-bold text-slate-800">
+                                <td colspan="9" class="p-2">PRIMERA FASE: ACTIVIDADES PREVIAS (10 Días Hábiles)</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-medium">T1.1 Diagnóstico técnico y API WhatsApp</td>
+                                <td class="p-3">3 días</td>
+                                <td class="p-3">Día 1 - Día 3</td>
+                                <td class="p-3"><span class="bg-blue-500 text-white px-2 py-0.5 rounded text-[10px]">███</span></td>
+                                <td class="p-3"></td><td class="p-3"></td><td class="p-3"></td><td class="p-3"></td><td class="p-3"></td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-medium">T1.2 Esquema Base de Datos NoSQL</td>
+                                <td class="p-3">2 días</td>
+                                <td class="p-3">Día 4 - Día 5</td>
+                                <td class="p-3"><span class="bg-blue-500 text-white px-2 py-0.5 rounded text-[10px]">██</span></td>
+                                <td class="p-3"></td><td class="p-3"></td><td class="p-3"></td><td class="p-3"></td><td class="p-3"></td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-medium">T2.1 Árboles de decisión UX/UI</td>
+                                <td class="p-3">3 días</td>
+                                <td class="p-3">Día 6 - Día 8</td>
+                                <td class="p-3"></td>
+                                <td class="p-3"><span class="bg-blue-500 text-white px-2 py-0.5 rounded text-[10px]">███</span></td>
+                                <td class="p-3"></td><td class="p-3"></td><td class="p-3"></td><td class="p-3"></td>
+                            </tr>
+
+                            <!-- FASE 2 -->
+                            <tr class="bg-slate-50 font-bold text-slate-800">
+                                <td colspan="9" class="p-2">SEGUNDA FASE: ACTIVIDADES DE CONCRECIÓN (11 Días Hábiles)</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-medium">T3.1 Programar Webhook en FastAPI</td>
+                                <td class="p-3">5 días</td>
+                                <td class="p-3">Día 11 - Día 15</td>
+                                <td class="p-3"></td><td class="p-3"></td>
+                                <td class="p-3"><span class="bg-emerald-500 text-white px-2 py-0.5 rounded text-[10px]">█████</span></td>
+                                <td class="p-3"></td><td class="p-3"></td><td class="p-3"></td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-medium">T3.2 Integración Semáforo Vivo</td>
+                                <td class="p-3">3 días</td>
+                                <td class="p-3">Día 16 - Día 18</td>
+                                <td class="p-3"></td><td class="p-3"></td><td class="p-3"></td>
+                                <td class="p-3"><span class="bg-emerald-500 text-white px-2 py-0.5 rounded text-[10px]">███</span></td>
+                                <td class="p-3"></td><td class="p-3"></td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-medium">T4.1 Pruebas de estrés y latencia</td>
+                                <td class="p-3">2 días</td>
+                                <td class="p-3">Día 19 - Día 20</td>
+                                <td class="p-3"></td><td class="p-3"></td><td class="p-3"></td>
+                                <td class="p-3"><span class="bg-emerald-500 text-white px-2 py-0.5 rounded text-[10px]">██</span></td>
+                                <td class="p-3"></td><td class="p-3"></td>
+                            </tr>
+
+                            <!-- FASE 3 -->
+                            <tr class="bg-slate-50 font-bold text-slate-800">
+                                <td colspan="9" class="p-2">TERCERA FASE: ACTIVIDADES DE DESARROLLO / CAMPO (9 Días Hábiles)</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-medium">T5.1 Colocación de señalética QR</td>
+                                <td class="p-3">3 días</td>
+                                <td class="p-3">Día 22 - Día 24</td>
+                                <td class="p-3"></td><td class="p-3"></td><td class="p-3"></td><td class="p-3"></td>
+                                <td class="p-3"><span class="bg-purple-500 text-white px-2 py-0.5 rounded text-[10px]">███</span></td>
+                                <td class="p-3"></td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-medium">T6.2 Reporte de resultados final</td>
+                                <td class="p-3">1 día</td>
+                                <td class="p-3">Día 30</td>
+                                <td class="p-3"></td><td class="p-3"></td><td class="p-3"></td><td class="p-3"></td><td class="p-3"></td>
+                                <td class="p-3"><span class="bg-pink-600 text-white px-2 py-0.5 rounded text-[10px]">█</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SECCIÓN 6: PROTOTIPO INTERACTIVO CHATBOT ==================== -->
+        <section id="sec-demo" class="content-sec hidden space-y-8">
+            <div class="text-center max-w-2xl mx-auto">
+                <span class="text-xs font-extrabold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">Demostración Interactiva</span>
+                <h2 class="text-3xl font-extrabold text-slate-900 mt-2">Simulador del Asistente Virtual</h2>
+                <p class="text-slate-600 text-sm">Prueba el flujo de interacción que experimentarán los pasajeros en el CETRAM Indios Verdes al escanear el código QR.</p>
+            </div>
+
+            <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+                
+                <!-- WHATSAPP PHONE MOCKUP -->
+                <div class="md:col-span-6 bg-slate-900 p-4 rounded-[40px] shadow-2xl border-4 border-slate-700">
+                    <!-- Phone Notch & Screen Header -->
+                    <div class="bg-emerald-800 text-white p-3 rounded-t-2xl flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center text-sm font-bold">
+                            <i class="fa-solid fa-robot"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-xs font-bold">Bot Movilidad Indios Verdes</h3>
+                            <p class="text-[10px] text-emerald-200"><i class="fa-solid fa-circle text-[6px] text-emerald-300"></i> En línea (Respuesta &lt;3s)</p>
+                        </div>
+                    </div>
+
+                    <!-- Chat Body -->
+                    <div id="chat-box" class="whatsapp-bg h-96 p-3 overflow-y-auto space-y-3 text-xs">
+                        <!-- System Message -->
+                        <div class="bg-amber-100/90 text-amber-900 p-2 rounded-lg text-[10px] text-center shadow-sm">
+                            <i class="fa-solid fa-lock text-[8px]"></i> Chat de prueba piloto. Datos simulados en tiempo real.
+                        </div>
+
+                        <!-- Bot Welcome Message -->
+                        <div class="bg-white p-3 rounded-tr-xl rounded-bl-xl rounded-br-xl shadow-sm max-w-[85%] space-y-1">
+                            <p class="font-bold text-slate-800">👋 ¡Hola! Bienvenido a la Red de Movilidad Inteligente CDMX.</p>
+                            <p class="text-slate-600">Por favor, selecciona la opción que deseas consultar o reportar en el CETRAM Indios Verdes:</p>
+                            <div class="text-[10px] text-slate-400 text-right pt-1">08:00 AM</div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Action Buttons inside Chat -->
+                    <div class="bg-slate-100 p-2 rounded-b-2xl border-t border-slate-200 space-y-1">
+                        <p class="text-[10px] font-bold text-slate-500 px-1">Toca para interactuar:</p>
+                        <div class="grid grid-cols-2 gap-1.5">
+                            <button onclick="sendSimulatedOption('1', ' Metro L3')" class="bg-white hover:bg-slate-200 text-slate-800 text-[11px] p-2 rounded border border-slate-300 text-left font-medium">1️⃣ Metro L3</button>
+                            <button onclick="sendSimulatedOption('2', ' Metrobús L1/L7')" class="bg-white hover:bg-slate-200 text-slate-800 text-[11px] p-2 rounded border border-slate-300 text-left font-medium">2️⃣ Metrobús L1/L7</button>
+                            <button onclick="sendSimulatedOption('3', ' Cablebús L1')" class="bg-white hover:bg-slate-200 text-slate-800 text-[11px] p-2 rounded border border-slate-300 text-left font-medium">3️⃣ Cablebús L1</button>
+                            <button onclick="sendSimulatedOption('4', ' Reportar Situación')" class="bg-pink-50 hover:bg-pink-100 text-cdmx-pink text-[11px] p-2 rounded border border-pink-200 text-left font-bold">📢 Reportar Afluencia</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PANEL DE ESTADO VIVO DEL NODOS -->
+                <div class="md:col-span-6 space-y-6">
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                        <h3 class="font-bold text-slate-900 text-lg flex items-center space-x-2">
+                            <i class="fa-solid fa-traffic-light text-amber-500"></i>
+                            <span>Semáforo Dinámico en Vivo</span>
+                        </h3>
+                        <p class="text-xs text-slate-600">Estado de afluencia calculado por algoritmo de validación de reportes comunitarios:</p>
+
+                        <div class="space-y-3">
+                            <!-- METRO L3 STATUS -->
+                            <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-200">
+                                <div class="flex items-center space-x-3">
+                                    <span class="w-3 h-3 rounded-full bg-emerald-500 animate-ping"></span>
+                                    <div>
+                                        <p class="font-bold text-slate-800 text-xs">Metro Línea 3 (Andenes)</p>
+                                        <p class="text-[10px] text-slate-500">Tiempo espera: ~3 mins</p>
+                                    </div>
+                                </div>
+                                <span class="bg-emerald-100 text-emerald-800 font-extrabold text-[10px] px-2.5 py-1 rounded-full uppercase">VERDE (Fluido)</span>
+                            </div>
+
+                            <!-- METROBÚS L1 STATUS -->
+                            <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-200">
+                                <div class="flex items-center space-x-3">
+                                    <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+                                    <div>
+                                        <p class="font-bold text-slate-800 text-xs">Metrobús Línea 1</p>
+                                        <p class="text-[10px] text-slate-500">Filas moderadas en andén B</p>
+                                    </div>
+                                </div>
+                                <span class="bg-amber-100 text-amber-800 font-extrabold text-[10px] px-2.5 py-1 rounded-full uppercase">AMARILLO (Moderado)</span>
+                            </div>
+
+                            <!-- CABLEBÚS STATUS -->
+                            <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-200">
+                                <div class="flex items-center space-x-3">
+                                    <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                                    <div>
+                                        <p class="font-bold text-slate-800 text-xs">Cablebús Línea 1</p>
+                                        <p class="text-[10px] text-slate-500">Abordaje continuo</p>
+                                    </div>
+                                </div>
+                                <span class="bg-emerald-100 text-emerald-800 font-extrabold text-[10px] px-2.5 py-1 rounded-full uppercase">VERDE (Fluido)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-blue-50 p-4 rounded-2xl border border-blue-200 text-xs text-blue-900 space-y-1">
+                        <p class="font-bold"><i class="fa-solid fa-circle-info"></i> ¿Cómo funciona el algoritmo de veracidad?</p>
+                        <p class="text-[11px] leading-relaxed">El sistema compara reportes ciudadanos emitidos en una ventana de 10 minutos en la misma geolocalización. Si 3 o más reportes coinciden, la alerta del semáforo se actualiza automáticamente con precisión &gt;85%.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER INSTITUCIONAL -->
+    <footer class="bg-slate-900 text-white mt-16 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                <div class="md:col-span-8 space-y-2">
+                    <span class="text-xs font-bold text-cdmx-pink uppercase tracking-widest">Proyecto Integrador Módulo 23</span>
+                    <h2 class="text-xl font-bold">Red de Movilidad Inteligente CDMX</h2>
+                    <p class="text-xs text-slate-400 max-w-xl">
+                        Desarrollado por <strong>César Martínez Villanueva</strong> para el Servicio Nacional de Bachillerato en Línea Prepa en Línea-SEP. Módulo 23: Tecnologías emergentes para la administración y gestión.
+                    </p>
+                </div>
+                <div class="md:col-span-4 text-left md:text-right text-xs text-slate-400 space-y-1">
+                    <p><strong>Grupo:</strong> M23C2G62-019</p>
+                    <p><strong>Asesora Virtual:</strong> María Jesica Zavala Pineda</p>
+                    <p class="text-[10px] text-slate-500 mt-2">© 2026 Prepa en Línea-SEP. Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LÓGICO DE NAVEGACIÓN Y SIMULADOR -->
+    <script>
+        // Función para cambiar de sección/tab
+        function switchSection(secId) {
+            // Ocultar todas las secciones
+            document.querySelectorAll('.content-sec').forEach(sec => sec.classList.add('hidden'));
+            
+            // Remover estado activo de los botones
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('tab-active'));
+
+            // Mostrar sección seleccionada
+            const targetSec = document.getElementById('sec-' + secId);
+            if (targetSec) targetSec.classList.remove('hidden');
+
+            // Marcar tab activa
+            const activeTab = document.getElementById('tab-' + secId);
+            if (activeTab) activeTab.classList.add('tab-active');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Toggle menú móvil
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Simulador interactivo de WhatsApp
+        function sendSimulatedOption(option, title) {
+            const chatBox = document.getElementById('chat-box');
+            const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            // Mensaje del usuario
+            const userMsg = document.createElement('div');
+            userMsg.className = "bg-emerald-100 text-emerald-950 p-2.5 rounded-tl-xl rounded-tr-xl rounded-bl-xl shadow-sm max-w-[80%] ml-auto space-y-1 text-right";
+            userMsg.innerHTML = `<p class="font-medium">${option} - ${title}</p><div class="text-[9px] text-emerald-700">${timeStr}</div>`;
+            chatBox.appendChild(userMsg);
+
+            // Scroll automático
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // Respuesta automatizada del bot (menor a 1 segundo simulado)
+            setTimeout(() => {
+                const botMsg = document.createElement('div');
+                botMsg.className = "bg-white p-3 rounded-tr-xl rounded-bl-xl rounded-br-xl shadow-sm max-w-[85%] space-y-1";
+                
+                let responseText = "";
+                if (option === '1') {
+                    responseText = "🟢 <strong>STC METRO LÍNEA 3</strong><br>• Estado: <strong>VERDE (Fluido)</strong><br>• Tiempos de espera: 3 a 4 minutos por tren.<br>• Andén Indios Verdes: Afluencia moderada con avance continuo.";
+                } else if (option === '2') {
+                    responseText = "🟡 <strong>METROBÚS LÍNEA 1 / L7</strong><br>• Estado: <strong>AMARILLO (Moderado)</strong><br>• Fila en andén B (El Caminero): ~12 minutos.<br>• Recomendación: Abordar en acceso sur para menor espera.";
+                } else if (option === '3') {
+                    responseText = "🟢 <strong>CABLEBÚS LÍNEA 1</strong><br>• Estado: <strong>VERDE (Fluido)</strong><br>• Cabinas operando a velocidad normal.<br>• Tiempo de espera en torniquetes: &lt;2 minutos.";
+                } else if (option === '4') {
+                    responseText = "📢 <strong>REPORTAR AFLUENCIA CIUDADANA</strong><br>¡Gracias por contribuir! Por favor selecciona el estado actual de tu andén:<br>1️⃣ Verde (Vacío/Fluido)<br>2️⃣ Amarillo (Saturación Media)<br>3️⃣ Rojo (Retraso Severo/Aglomeración)";
+                }
+
+                botMsg.innerHTML = `<p class="text-slate-800 leading-relaxed">${responseText}</p><div class="text-[9px] text-slate-400 text-right pt-1">${timeStr}</div>`;
+                chatBox.appendChild(botMsg);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 600);
+        }
+    </script>
+</body>
+</html>
